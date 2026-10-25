@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Eman — From Saif</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Dancing+Script:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        roseGold: '#B76E79',
+                        deepRed: '#7A0016',
+                        romanticPink: '#FFD1DC',
+                        blushPink: '#FFF0F3',
+                        glowPink: '#FF4D6D',
+                    },
+                    fontFamily: {
+                        heading: ['Dancing Script', 'cursive'],
+                        serifTitle: ['Cinzel', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        glow: {
+                            '0%': { textShadow: '0 0 10px #FF4D6D, 0 0 20px #FF4D6D' },
+                            '100%': { textShadow: '0 0 20px #FF758F, 0 0 35px #FF758F, 0 0 50px #FF758F' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar & perspective styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a0006;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7A0016;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF4D6D;
+        }
+
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+
+        /* Heart particle Canvas background */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .glass-card {
+            background: rgba(255, 240, 243, 0.07);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 209, 220, 0.2);
+        }
+
+        .glass-card-hover {
+            transition: all 0.4s ease;
+        }
+        .glass-card-hover:hover {
+            background: rgba(255, 240, 243, 0.15);
+            border-color: rgba(255, 77, 109, 0.5);
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.25);
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-[#1a0007] via-[#2d000f] to-[#1a0007] text-blushPink font-sans min-h-screen overflow-x-hidden relative selection:bg-glowPink selection:text-white">
+
+    <!-- Interactive Canvas for Floating Hearts & Particles -->
+    <canvas id="canvas-bg"></canvas>
+
+    <!-- Floating Audio Toggle Button -->
+    <div class="fixed top-6 right-6 z-50">
+        <button id="musicToggleBtn" onclick="toggleAudio()" class="flex items-center gap-2 bg-gradient-to-r from-deepRed to-glowPink p-3.5 px-5 rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all text-white font-medium border border-roseGold/40 group">
+            <i id="musicIcon" class="fa-solid fa-music animate-bounce"></i>
+            <span id="musicText" class="text-sm tracking-wide hidden sm:inline">Play Ambient Sound</span>
+        </button>
+    </div>
+
+    <!-- Main Container -->
+    <main class="relative z-10 max-w-6xl mx-auto px-4 py-12 flex flex-col items-center">
+
+        <!-- Hero Section -->
+        <header class="text-center my-10 animate-float">
+            <div class="inline-block px-4 py-1.5 rounded-full glass-card text-roseGold font-semibold text-sm tracking-widest uppercase mb-4 border border-roseGold/30">
+                ✨ A Special Dedication ✨
+            </div>
+            <h1 class="text-6xl md:text-8xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-r from-romanticPink via-glowPink to-roseGold animate-glow py-2">
+                Eman
+            </h1>
+            <p class="text-lg md:text-2xl font-serifTitle tracking-wide text-roseGold/90 mt-4">
+                From Saif — <span class="text-blushPink font-sans text-base md:text-lg italic">Your Friend</span>
+            </p>
+            <div class="w-32 h-1 bg-gradient-to-r from-transparent via-glowPink to-transparent mx-auto mt-6 rounded-full"></div>
+        </header>
+
+        <!-- Dynamic Message Box / Banner -->
+        <section class="w-full max-w-3xl my-6">
+            <div class="glass-card rounded-3xl p-6 md:p-8 text-center border border-glowPink/30 relative overflow-hidden shadow-2xl">
+                <div class="absolute -top-10 -left-10 w-32 h-32 bg-glowPink/20 rounded-full blur-2xl"></div>
+                <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-roseGold/20 rounded-full blur-2xl"></div>
+                <i class="fa-solid fa-quote-left text-3xl text-glowPink/40 mb-3"></i>
+                <p class="text-lg md:text-xl font-light text-blushPink/90 leading-relaxed italic">
+                    "Friends bring light into moments, warmth into life, and unforgettable memories into time. Here's a small space built with appreciation for a grand friendship!"
+                </p>
+                <i class="fa-solid fa-quote-right text-3xl text-glowPink/40 mt-3"></i>
+            </div>
+        </section>
+
+        <!-- Anime Couple Gallery Section (6 Pictures) -->
+        <section class="w-full my-12">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-serifTitle text-romanticPink font-bold">Anime Couple Moments</h2>
+                <p class="text-roseGold/80 text-sm mt-2">Curated moments of warmth & charm</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                
+                <!-- Couple Image 1 -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden group shadow-lg">
+                    <div class="relative h-72 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=800&auto=format&fit=crop" 
+                             alt="Anime Couple Stargazing" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                             onerror="this.src='https://placehold.co/600x800/2d000f/FFD1DC?text=Anime+Couple+1'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#1a0007] via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity"></div>
+                        <span class="absolute top-4 right-4 bg-deepRed/80 backdrop-blur-md text-xs text-romanticPink px-3 py-1 rounded-full border border-glowPink/30">
+                            Stargazing ✨
+                        </span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-serifTitle text-lg text-romanticPink font-semibold">Under The Stars</h3>
+                        <p class="text-xs text-roseGold/80 mt-1">Boundless night skies & sweet quiet moments.</p>
+                    </div>
+                </div>
+
+                <!-- Couple Image 2 -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden group shadow-lg">
+                    <div class="relative h-72 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop" 
+                             alt="Anime Couple Sunset Walk" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                             onerror="this.src='https://placehold.co/600x800/2d000f/FFD1DC?text=Anime+Couple+2'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#1a0007] via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity"></div>
+                        <span class="absolute top-4 right-4 bg-deepRed/80 backdrop-blur-md text-xs text-romanticPink px-3 py-1 rounded-full border border-glowPink/30">
+                            Warm Sunset 🌅
+                        </span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-serifTitle text-lg text-romanticPink font-semibold">Golden Hours</h3>
+                        <p class="text-xs text-roseGold/80 mt-1">Walking together into glowing orange horizons.</p>
+                    </div>
+                </div>
+
+                <!-- Couple Image 3 -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden group shadow-lg">
+                    <div class="relative h-72 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=800&auto=format&fit=crop" 
+                             alt="Anime Couple Rain Warmth" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                             onerror="this.src='https://placehold.co/600x800/2d000f/FFD1DC?text=Anime+Couple+3'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#1a0007] via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity"></div>
+                        <span class="absolute top-4 right-4 bg-deepRed/80 backdrop-blur-md text-xs text-romanticPink px-3 py-1 rounded-full border border-glowPink/30">
+                            Cozy Rain 🌧️
+                        </span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-serifTitle text-lg text-romanticPink font-semibold">Rainy Shelter</h3>
+                        <p class="text-xs text-roseGold/80 mt-1">Sharing warmth when raindrops fall around.</p>
+                    </div>
+                </div>
+
+                <!-- Couple Image 4 -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden group shadow-lg">
+                    <div class="relative h-72 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=800&auto=format&fit=crop" 
+                             alt="Anime Couple Cherry Blossom" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                             onerror="this.src='https://placehold.co/600x800/2d000f/FFD1DC?text=Anime+Couple+4'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#1a0007] via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity"></div>
+                        <span class="absolute top-4 right-4 bg-deepRed/80 backdrop-blur-md text-xs text-romanticPink px-3 py-1 rounded-full border border-glowPink/30">
+                            Sakura Blossom 🌸
+                        </span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-serifTitle text-lg text-romanticPink font-semibold">Spring Petals</h3>
+                        <p class="text-xs text-roseGold/80 mt-1">Floating cherry petals and sweet laughter.</p>
+                    </div>
+                </div>
+
+                <!-- Couple Image 5 -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden group shadow-lg">
+                    <div class="relative h-72 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=800&auto=format&fit=crop" 
+                             alt="Anime Couple Cafe Chill" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                             onerror="this.src='https://placehold.co/600x800/2d000f/FFD1DC?text=Anime+Couple+5'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#1a0007] via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity"></div>
+                        <span class="absolute top-4 right-4 bg-deepRed/80 backdrop-blur-md text-xs text-romanticPink px-3 py-1 rounded-full border border-glowPink/30">
+                            Coffee Vibe ☕
+                        </span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-serifTitle text-lg text-romanticPink font-semibold">Quiet Cafe</h3>
+                        <p class="text-xs text-roseGold/80 mt-1">Coffee, stories, and warm comforting vibes.</p>
+                    </div>
+                </div>
+
+                <!-- Couple Image 6 -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden group shadow-lg">
+                    <div class="relative h-72 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1513279922550-250c2129b13a?q=80&w=800&auto=format&fit=crop" 
+                             alt="Anime Couple Lantern Festival" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                             onerror="this.src='https://placehold.co/600x800/2d000f/FFD1DC?text=Anime+Couple+6'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#1a0007] via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity"></div>
+                        <span class="absolute top-4 right-4 bg-deepRed/80 backdrop-blur-md text-xs text-romanticPink px-3 py-1 rounded-full border border-glowPink/30">
+                            Festival Lights 🎆
+                        </span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-serifTitle text-lg text-romanticPink font-semibold">Night Lanterns</h3>
+                        <p class="text-xs text-roseGold/80 mt-1">Glowing lights illuminating cherished memories.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Interactive Flip Message Cards -->
+        <section class="w-full my-12">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-serifTitle text-romanticPink font-bold">Interactive Flip Cards</h2>
+                <p class="text-roseGold/80 text-sm mt-2">Tap/Click each card to reveal friendship notes</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Flip Card 1 -->
+                <div class="h-64 perspective-1000 cursor-pointer" onclick="flipCard(this)">
+                    <div class="relative w-full h-full duration-700 transform-style-3d card-inner">
+                        <!-- Front -->
+                        <div class="absolute inset-0 w-full h-full glass-card rounded-2xl p-6 flex flex-col justify-center items-center text-center backface-hidden border border-glowPink/30 shadow-xl">
+                            <div class="w-14 h-14 rounded-full bg-deepRed/60 flex items-center justify-center text-glowPink text-2xl mb-4 border border-roseGold/30">
+                                <i class="fa-solid fa-sparkles"></i>
+                            </div>
+                            <h3 class="text-xl font-serifTitle text-romanticPink font-semibold">Positive Vibes</h3>
+                            <p class="text-xs text-roseGold/70 mt-2">Click to flip card ✨</p>
+                        </div>
+                        <!-- Back -->
+                        <div class="absolute inset-0 w-full h-full bg-gradient-to-br from-deepRed to-[#3a0010] rounded-2xl p-6 flex flex-col justify-center items-center text-center rotate-y-180 backface-hidden border border-roseGold/40 shadow-xl">
+                            <i class="fa-solid fa-heart text-glowPink text-2xl mb-3"></i>
+                            <p class="text-sm text-blushPink font-light leading-relaxed">
+                                "May your days always be filled with endless smile, creativity, and bright positive energy!"
+                            </p>
+                            <span class="text-xs text-roseGold mt-4 font-semibold">— From Saif</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flip Card 2 -->
+                <div class="h-64 perspective-1000 cursor-pointer" onclick="flipCard(this)">
+                    <div class="relative w-full h-full duration-700 transform-style-3d card-inner">
+                        <!-- Front -->
+                        <div class="absolute inset-0 w-full h-full glass-card rounded-2xl p-6 flex flex-col justify-center items-center text-center backface-hidden border border-glowPink/30 shadow-xl">
+                            <div class="w-14 h-14 rounded-full bg-deepRed/60 flex items-center justify-center text-glowPink text-2xl mb-4 border border-roseGold/30">
+                                <i class="fa-solid fa-gem"></i>
+                            </div>
+                            <h3 class="text-xl font-serifTitle text-romanticPink font-semibold">True Friendship</h3>
+                            <p class="text-xs text-roseGold/70 mt-2">Click to flip card 💎</p>
+                        </div>
+                        <!-- Back -->
+                        <div class="absolute inset-0 w-full h-full bg-gradient-to-br from-deepRed to-[#3a0010] rounded-2xl p-6 flex flex-col justify-center items-center text-center rotate-y-180 backface-hidden border border-roseGold/40 shadow-xl">
+                            <i class="fa-solid fa-handshake-angle text-glowPink text-2xl mb-3"></i>
+                            <p class="text-sm text-blushPink font-light leading-relaxed">
+                                "Great friends are like rare gems — valuable, radiant, and making life so much brighter."
+                            </p>
+                            <span class="text-xs text-roseGold mt-4 font-semibold">— Dedicated to Eman</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flip Card 3 -->
+                <div class="h-64 perspective-1000 cursor-pointer" onclick="flipCard(this)">
+                    <div class="relative w-full h-full duration-700 transform-style-3d card-inner">
+                        <!-- Front -->
+                        <div class="absolute inset-0 w-full h-full glass-card rounded-2xl p-6 flex flex-col justify-center items-center text-center backface-hidden border border-glowPink/30 shadow-xl">
+                            <div class="w-14 h-14 rounded-full bg-deepRed/60 flex items-center justify-center text-glowPink text-2xl mb-4 border border-roseGold/30">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </div>
+                            <h3 class="text-xl font-serifTitle text-romanticPink font-semibold">Always Shine</h3>
+                            <p class="text-xs text-roseGold/70 mt-2">Click to flip card 🌟</p>
+                        </div>
+                        <!-- Back -->
+                        <div class="absolute inset-0 w-full h-full bg-gradient-to-br from-deepRed to-[#3a0010] rounded-2xl p-6 flex flex-col justify-center items-center text-center rotate-y-180 backface-hidden border border-roseGold/40 shadow-xl">
+                            <i class="fa-solid fa-star text-glowPink text-2xl mb-3"></i>
+                            <p class="text-sm text-blushPink font-light leading-relaxed">
+                                "Keep shining bright in everything you do, Eman! Wishing you success and happiness always."
+                            </p>
+                            <span class="text-xs text-roseGold mt-4 font-semibold">— Saif</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Interactive Heart Unlock Surprise Section -->
+        <section class="w-full my-12 text-center">
+            <div class="glass-card rounded-3xl p-8 md:p-12 border border-glowPink/30 relative overflow-hidden shadow-2xl">
+                <h2 class="text-3xl font-serifTitle text-romanticPink font-bold mb-2">Surprise Interactive Heart</h2>
+                <p class="text-sm text-roseGold/80 mb-6">Click the heart 5 times to unlock a special message!</p>
+                
+                <div class="relative inline-block">
+                    <button id="heartUnlockBtn" onclick="clickHeart()" class="w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-tr from-deepRed via-glowPink to-roseGold flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-transform border-2 border-blushPink/40 group focus:outline-none">
+                        <i id="heartIcon" class="fa-solid fa-heart text-5xl md:text-6xl text-white group-hover:animate-ping"></i>
+                    </button>
+                    <!-- Click Counter Badge -->
+                    <span id="clickCounter" class="absolute -top-2 -right-2 bg-glowPink text-white font-bold text-xs w-8 h-8 rounded-full flex items-center justify-center border-2 border-[#1a0007]">
+                        0/5
+                    </span>
+                </div>
+
+                <!-- Secret Message Container -->
+                <div id="secretMessage" class="hidden mt-8 p-6 bg-deepRed/80 rounded-2xl border border-roseGold/50 animate-fade-in">
+                    <i class="fa-solid fa-crown text-3xl text-yellow-400 mb-3"></i>
+                    <h3 class="text-2xl font-heading text-romanticPink font-bold">Unlocked Surprise! 🌟</h3>
+                    <p class="text-blushPink text-base mt-2 max-w-lg mx-auto">
+                        "Eman, thank you for being an awesome friend! May your life be as colorful and wonderful as anime stories."
+                    </p>
+                    <div class="mt-4 text-xs font-serifTitle text-roseGold tracking-widest uppercase">
+                        From Saif — Your Friend
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-12 text-center text-xs text-roseGold/60 border-t border-roseGold/20 pt-8 w-full">
+            <p>Designed with ❤️ for <span class="text-romanticPink font-semibold">Eman</span> | Crafted by <span class="text-romanticPink font-semibold">Saif</span></p>
+        </footer>
+
+    </main>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Canvas Ambient Heart & Sparkle Animation ---
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = height + Math.random() * 100;
+                this.size = Math.random() * 12 + 6;
+                this.speedY = Math.random() * 1.5 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.6 + 0.2;
+                this.color = Math.random() > 0.4 ? '#FF4D6D' : '#FFD1DC';
+                this.isHeart = Math.random() > 0.3;
+            }
+
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                if (this.y < -20) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+
+                if (this.isHeart) {
+                    // Draw Heart Shape
+                    ctx.beginPath();
+                    const topCurveHeight = this.size * 0.3;
+                    ctx.moveTo(this.x, this.y + topCurveHeight);
+                    ctx.bezierCurveTo(this.x, this.y, this.x - this.size / 2, this.y, this.x - this.size / 2, this.y + topCurveHeight);
+                    ctx.bezierCurveTo(this.x - this.size / 2, this.y + (this.size + topCurveHeight) / 2, this.x, this.y + this.size, this.x, this.y + this.size);
+                    ctx.bezierCurveTo(this.x, this.y + this.size, this.x + this.size / 2, this.y + (this.size + topCurveHeight) / 2, this.x + this.size / 2, this.y + topCurveHeight);
+                    ctx.bezierCurveTo(this.x + this.size / 2, this.y, this.x, this.y, this.x, this.y + topCurveHeight);
+                    ctx.closePath();
+                    ctx.fill();
+                } else {
+                    // Draw glowing circle
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size / 3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                ctx.restore();
+            }
+        }
+
+        const particles = Array.from({ length: 45 }, () => new Particle());
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.onload = function() {
+            animateParticles();
+        };
+
+        // --- 2. Interactive Card Flip ---
+        function flipCard(cardElement) {
+            const inner = cardElement.querySelector('.card-inner');
+            inner.classList.toggle('rotate-y-180');
+        }
+
+        // --- 3. Heart Unlock Counter Feature ---
+        let heartClicks = 0;
+        function clickHeart() {
+            if (heartClicks < 5) {
+                heartClicks++;
+                document.getElementById('clickCounter').innerText = `${heartClicks}/5`;
+                
+                // Play tiny click audio tone via Web Audio API
+                playTone(300 + heartClicks * 100, 0.1);
+
+                if (heartClicks === 5) {
+                    document.getElementById('secretMessage').classList.remove('hidden');
+                    document.getElementById('clickCounter').innerText = "Unlocked!";
+                    document.getElementById('clickCounter').classList.add('bg-green-500');
+                    playSuccessSound();
+                }
+            }
+        }
+
+        // --- 4. Web Audio API Ambient Sound Generator ---
+        let audioCtx = null;
+        let isPlaying = false;
+        let ambientOscillator = null;
+
+        function toggleAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            const musicIcon = document.getElementById('musicIcon');
+            const musicText = document.getElementById('musicText');
+
+            if (!isPlaying) {
+                startAmbientSound();
+                isPlaying = true;
+                musicIcon.className = "fa-solid fa-pause animate-spin";
+                musicText.innerText = "Pause Ambience";
+            } else {
+                stopAmbientSound();
+                isPlaying = false;
+                musicIcon.className = "fa-solid fa-music animate-bounce";
+                musicText.innerText = "Play Ambient Sound";
+            }
+        }
+
+        function startAmbientSound() {
+            if (!audioCtx) return;
+
+            // Simple warm synth pad simulation using Web Audio API
+            const osc1 = audioCtx.createOscillator();
+            const osc2 = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc1.type = 'sine';
+            osc2.type = 'triangle';
+
+            // Warm chord frequencies (A major chord feel)
+            osc1.frequency.setValueAtTime(220, audioCtx.currentTime); // A3
+            osc2.frequency.setValueAtTime(277.18, audioCtx.currentTime); // C#4
+
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+
+            osc1.connect(gain);
+            osc2.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc1.start();
+            osc2.start();
+
+            ambientOscillator = { osc1, osc2, gain };
+        }
+
+        function stopAmbientSound() {
+            if (ambientOscillator) {
+                ambientOscillator.osc1.stop();
+                ambientOscillator.osc2.stop();
+                ambientOscillator = null;
+            }
+        }
+
+        function playTone(freq, duration) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch(e) {}
+        }
+
+        function playSuccessSound() {
+            [400, 520, 660, 880].forEach((freq, idx) => {
+                setTimeout(() => playTone(freq, 0.2), idx * 150);
+            });
+        }
+    </script>
+</body>
+</html>
